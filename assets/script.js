@@ -1,53 +1,58 @@
 // Global variables
 var searchHistory = [];
-var weatherApiRootUrl = 'https://api.openweathermap.org';
-var weatherApiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
+var weatherApiPath = 'https://api.openweathermap.org/data/2.5/onecall?';
+var apiKey = '&appid=d91f911bcf2c0f925fb6535547a5ddc9';
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
 var searchInput = document.querySelector('#search-input');
+var searchBtn = document.querySelector('#search-button');
 var todayContainer = document.querySelector('#today');
 var forecastContainer = document.querySelector('#forecast');
 var searchHistoryContainer = document.querySelector('#history');
 
-// Fetches weather data for given location from the Weather Geolocation
-// endpoint; then, calls functions to display current and forecast weather data.
 // Add timezone plugins to day.js
 dayjs.extend(window.dayjs_plugin_utc);
 dayjs.extend(window.dayjs_plugin_timezone);
 
 function renderItems(city, data) {
-  // renderCurrentWeather(city, data.current, data.timezone);
+//   renderCurrentWeather(city, data.current, data.timezone);
   renderForecast(data.daily, data.timezone);
 }
+
+// event handler for click
+searchBtn.addEventListener("click", function(){
+    alert("click");
+    
+    // parse text data from #searchinput
+    // inject city name into api path, call fetchWeather
+    //if name is invalid -> alert
+
+})
+
+// save search to searchHistoryContainer via local storage
+// clear local storage btn
 
 
 function fetchWeather(location) {
  	var { lat } = location;
   	var { lon } = location;
   	var city = location.name;
- 	var apiUrl = `${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`;
+ 	var apiUrl = `${weatherApiPath}lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly${apiKey}`;
 
 
  	fetch(apiUrl)
  		.then(
 
- 			function (res) {
+ 			function(res) {
 	      		return res.json();
-	    	}
-
-
- 			)
+	    	})
 	    .then(
-	    	function (data) {
-
+	    	function(data) {
 	    	console.log("DATA", data)
       		renderItems(city, data);
-
-
-    	}
-    	)
-    	.catch(function (err) {
+    	})
+    	.catch(function(err) {
       		console.error(err);
     	});
 
@@ -69,10 +74,7 @@ function renderForecast(dailyForecast, timezone) {
   forecastContainer.innerHTML = '';
   forecastContainer.append(headingCol);
   for (var i = 0; i < dailyForecast.length; i++) {
-    // The api returns forecast data which may include 12pm on the same day and
-    // always includes the next 7 days. The api documentation does not provide
-    // information on the behavior for including the same day. Results may have
-    // 7 or 8 items.
+
     if (dailyForecast[i].dt >= startDt && dailyForecast[i].dt < endDt) {
       renderForecastCard(dailyForecast[i], timezone);
     }
