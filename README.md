@@ -7,9 +7,6 @@
 ![CSS][css-url]
 
 
-![Image](https://drive.google.com/uc?export=view&id=1tavtS08f-7WVQNws899sJl9xHCPR6b7v)
-
-
 ## Installation
 
 Clone the repository:
@@ -25,7 +22,7 @@ Use the search bar to select a city of your choice, and view the weekly forecast
 
 ## Deployed Application
 You can view the live application
-[here](https://graphic-ql.herokuapp.com/)
+[here](https://t-starkw.github.io/weather-watcher/)
 
 ## Meta
 
